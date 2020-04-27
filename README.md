@@ -3,8 +3,13 @@ Paquete de python3 para la obtención de rutas para de viajes origen/destino en 
 
 ## Instalación
 `python setup.py install --user`
+## Copyright
+
+2020, Laboratorio de Gestión de Sistemas en Tiempo Real, Facultad de Minas, Universidad Nacional de Colombia
 
 ## Contacto
+
+[![LGSTR Logo](docs/LGSTR_logo.png)](https://sites.google.com/unal.edu.co/lab-gstr/)
 
 - Juan Pablo Noreña <jpnorenam@unal.edu.co>
 
