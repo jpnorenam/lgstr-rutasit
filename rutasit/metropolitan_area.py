@@ -4,6 +4,8 @@ import pickle
 from .transport_systems import transport_sys_group
 from shapely.geometry import Polygon
 from shapely.geometry import Point
+from shapely.geometry import LineString
+import matplotlib.pyplot as plt
 from datetime import datetime
 import shapely.ops as ops
 import pyproj
@@ -121,7 +123,16 @@ class met_area(object):
         if oSys == dSys:
             bSys = np.where(np.logical_and(oBelong, dBelong) == True)[0][0]
             info, trace = self.transport_sys[bSys].decode_connection(origin_zone, destiny_zone)
+            if plot:
+                plt.plot(*self.polygons_dict[origin_zone].exterior.xy)
+                plt.plot(*self.polygons_dict[destiny_zone].exterior.xy)
+                plt.plot(*LineString(trace).xy)
+                plt.xlim((-75.68, -75.48))
+                plt.ylim((6.14, 6.34))
+                plt.show()
             return info
+
+            
         #elif len(self.tsg_connections[oSys][dSys]) != 0:
         #    inter_group_destiny = self.closest_zone(origin_zone, list(self.tsg_connections[oSys][dSys]))
         #    info1, trace1 = self.transport_sys[oSys].decode_connection(origin_zone, inter_group_destiny)
@@ -131,6 +142,14 @@ class met_area(object):
             inter_jump1 = self.closest_zone(origin_zone, list(self.transport_sys[0].public_coverage))
             inter_jump2 = self.closest_zone(destiny_zone, list(self.transport_sys[0].public_coverage))
             info1, trace1 = self.transport_sys[oSys].decode_connection(origin_zone, inter_jump1)
-            infoM, trace1 = self.transport_sys[0].decode_connection(inter_jump1, inter_jump2)
+            infoM, traceM = self.transport_sys[0].decode_connection(inter_jump1, inter_jump2)
             info2, trace2 = self.transport_sys[dSys].decode_connection(inter_jump2, destiny_zone)
+            if plot:
+                plt.plot(*self.polygons_dict[origin_zone].exterior.xy)
+                plt.plot(*self.polygons_dict[destiny_zone].exterior.xy)
+                plt.plot(*LineString(trace1 + traceM + trace2).xy)
+                plt.xlim((-75.7, -75.4))
+                plt.ylim((6.1, 6.4))
+                plt.show()
             return info1 + infoM + info2
+            
