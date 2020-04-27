@@ -1,5 +1,5 @@
 # lgstr-rutasit
-Paquete de python3 para la obtención de rutas para de viajes origen/destino en zonas metropolitanas divididas por zonas
+Paquete de python3 para la obtención de ruta de viajes origen/destino entre zonas metropolitanas
 
 ## Instalación
 `python setup.py install --user`
