@@ -128,11 +128,12 @@ class met_area(object):
             bSys = np.where(np.logical_and(oBelong, dBelong) == True)[0][0]
             info, trace = self.transport_sys[bSys].decode_connection(origin_zone, destiny_zone)
             if plot:
-                plt.plot(*self.polygons_dict[origin_zone].exterior.xy)
-                plt.plot(*self.polygons_dict[destiny_zone].exterior.xy)
-                plt.plot(*LineString(trace).xy)
-                plt.xlim((-75.68, -75.48))
-                plt.ylim((6.14, 6.34))
+                plt.plot(*self.polygons_dict[origin_zone].exterior.xy, label="origen")
+                plt.plot(*self.polygons_dict[destiny_zone].exterior.xy, label="destino")
+                plt.plot(*LineString(trace).xy, label="ruta")
+                plt.legend()
+                plt.grid()
+                plt.axis('equal')
                 plt.show()
             return info
             
@@ -142,11 +143,12 @@ class met_area(object):
             info2, trace2 = self.transport_sys[dSys].decode_connection(inter_group_destiny, destiny_zone)
             if len(trace1)*len(trace2):
                 if plot:
-                    plt.plot(*self.polygons_dict[origin_zone].exterior.xy)
-                    plt.plot(*self.polygons_dict[destiny_zone].exterior.xy)
-                    plt.plot(*LineString(trace1 + trace2).xy)
-                    plt.xlim((-75.7, -75.4))
-                    plt.ylim((6.1, 6.4))
+                    plt.plot(*self.polygons_dict[origin_zone].exterior.xy, label="origen")
+                    plt.plot(*self.polygons_dict[destiny_zone].exterior.xy, label="destino")
+                    plt.plot(*LineString(trace1 + trace2).xy, label="ruta")
+                    plt.legend()
+                    plt.grid()
+                    plt.axis('equal')
                     plt.show()
                 return info1 + info2
             else:
@@ -157,11 +159,12 @@ class met_area(object):
                 info2, trace2 = self.transport_sys[dSys].decode_connection(inter_jump2, destiny_zone)
                 if len(trace1)*len(trace2)*len(traceM):
                     if plot:
-                        plt.plot(*self.polygons_dict[origin_zone].exterior.xy)
-                        plt.plot(*self.polygons_dict[destiny_zone].exterior.xy)
-                        plt.plot(*LineString(trace1 + traceM + trace2).xy)
-                        plt.xlim((-75.7, -75.4))
-                        plt.ylim((6.1, 6.4))
+                        plt.plot(*self.polygons_dict[origin_zone].exterior.xy, label="origen")
+                        plt.plot(*self.polygons_dict[destiny_zone].exterior.xy, label="destino")
+                        plt.plot(*LineString(trace1 + traceM + trace2).xy, label="ruta")
+                        plt.legend()
+                        plt.grid()
+                        plt.axis('equal')
                         plt.show()
                     return info1 + infoM + info2
                 else:
@@ -177,11 +180,12 @@ class met_area(object):
             info2, trace2 = self.transport_sys[dSys].decode_connection(inter_jump2, destiny_zone)
             if len(trace1)*len(trace2)*len(traceM):
                 if plot:
-                    plt.plot(*self.polygons_dict[origin_zone].exterior.xy)
-                    plt.plot(*self.polygons_dict[destiny_zone].exterior.xy)
-                    plt.plot(*LineString(trace1 + traceM + trace2).xy)
-                    plt.xlim((-75.7, -75.4))
-                    plt.ylim((6.1, 6.4))
+                    plt.plot(*self.polygons_dict[origin_zone].exterior.xy, label="origen")
+                    plt.plot(*self.polygons_dict[destiny_zone].exterior.xy, label="destino")
+                    plt.plot(*LineString(trace1 + traceM + trace2).xy, label="ruta")
+                    plt.legend()
+                    plt.grid()
+                    plt.axis('equal')
                     plt.show()
                 return info1 + infoM + info2
             else:
