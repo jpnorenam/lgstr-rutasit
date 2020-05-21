@@ -118,8 +118,12 @@ class met_area(object):
         nTS = len(self.transport_sys)
         oBelong = [ True if origin_zone in sys.public_coverage else False for sys in self.transport_sys ]
         dBelong = [ True if destiny_zone in sys.public_coverage else False for sys in self.transport_sys ]
-        oSys = np.where(np.array(oBelong) == True)[0][0]
-        dSys = np.where(np.array(dBelong) == True)[0][0]
+        try:
+            oSys = np.where(np.array(oBelong) == True)[0][0]
+            dSys = np.where(np.array(dBelong) == True)[0][0]
+        except:
+            return "NOT POSIBLE"
+
         if oSys == dSys:
             bSys = np.where(np.logical_and(oBelong, dBelong) == True)[0][0]
             info, trace = self.transport_sys[bSys].decode_connection(origin_zone, destiny_zone)
@@ -131,25 +135,55 @@ class met_area(object):
                 plt.ylim((6.14, 6.34))
                 plt.show()
             return info
-
             
-        #elif len(self.tsg_connections[oSys][dSys]) != 0:
-        #    inter_group_destiny = self.closest_zone(origin_zone, list(self.tsg_connections[oSys][dSys]))
-        #    info1, trace1 = self.transport_sys[oSys].decode_connection(origin_zone, inter_group_destiny)
-        #    info2, trace2 = self.transport_sys[dSys].decode_connection(inter_group_destiny, destiny_zone)
-        #    return info1 + info2
+        elif len(self.tsg_connections[oSys][dSys]) != 0:
+            inter_group_destiny = self.closest_zone(origin_zone, list(self.tsg_connections[oSys][dSys]))
+            info1, trace1 = self.transport_sys[oSys].decode_connection(origin_zone, inter_group_destiny)
+            info2, trace2 = self.transport_sys[dSys].decode_connection(inter_group_destiny, destiny_zone)
+            if len(trace1)*len(trace2):
+                if plot:
+                    plt.plot(*self.polygons_dict[origin_zone].exterior.xy)
+                    plt.plot(*self.polygons_dict[destiny_zone].exterior.xy)
+                    plt.plot(*LineString(trace1 + trace2).xy)
+                    plt.xlim((-75.7, -75.4))
+                    plt.ylim((6.1, 6.4))
+                    plt.show()
+                return info1 + info2
+            else:
+                inter_jump1 = self.closest_zone(origin_zone, list(self.transport_sys[0].public_coverage))
+                inter_jump2 = self.closest_zone(destiny_zone, list(self.transport_sys[0].public_coverage))
+                info1, trace1 = self.transport_sys[oSys].decode_connection(origin_zone, inter_jump1)
+                infoM, traceM = self.transport_sys[0].decode_connection(inter_jump1, inter_jump2)
+                info2, trace2 = self.transport_sys[dSys].decode_connection(inter_jump2, destiny_zone)
+                if len(trace1)*len(trace2)*len(traceM):
+                    if plot:
+                        plt.plot(*self.polygons_dict[origin_zone].exterior.xy)
+                        plt.plot(*self.polygons_dict[destiny_zone].exterior.xy)
+                        plt.plot(*LineString(trace1 + traceM + trace2).xy)
+                        plt.xlim((-75.7, -75.4))
+                        plt.ylim((6.1, 6.4))
+                        plt.show()
+                    return info1 + infoM + info2
+                else:
+                    return "NOT POSIBLE"
+        
+        
         else:
+            label .force_metro
             inter_jump1 = self.closest_zone(origin_zone, list(self.transport_sys[0].public_coverage))
             inter_jump2 = self.closest_zone(destiny_zone, list(self.transport_sys[0].public_coverage))
             info1, trace1 = self.transport_sys[oSys].decode_connection(origin_zone, inter_jump1)
             infoM, traceM = self.transport_sys[0].decode_connection(inter_jump1, inter_jump2)
             info2, trace2 = self.transport_sys[dSys].decode_connection(inter_jump2, destiny_zone)
-            if plot:
-                plt.plot(*self.polygons_dict[origin_zone].exterior.xy)
-                plt.plot(*self.polygons_dict[destiny_zone].exterior.xy)
-                plt.plot(*LineString(trace1 + traceM + trace2).xy)
-                plt.xlim((-75.7, -75.4))
-                plt.ylim((6.1, 6.4))
-                plt.show()
-            return info1 + infoM + info2
+            if len(trace1)*len(trace2)*len(traceM):
+                if plot:
+                    plt.plot(*self.polygons_dict[origin_zone].exterior.xy)
+                    plt.plot(*self.polygons_dict[destiny_zone].exterior.xy)
+                    plt.plot(*LineString(trace1 + traceM + trace2).xy)
+                    plt.xlim((-75.7, -75.4))
+                    plt.ylim((6.1, 6.4))
+                    plt.show()
+                return info1 + infoM + info2
+            else:
+                return "NOT POSIBLE"
             
