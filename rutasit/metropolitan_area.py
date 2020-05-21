@@ -172,7 +172,6 @@ class met_area(object):
         
         
         else:
-            label .force_metro
             inter_jump1 = self.closest_zone(origin_zone, list(self.transport_sys[0].public_coverage))
             inter_jump2 = self.closest_zone(destiny_zone, list(self.transport_sys[0].public_coverage))
             info1, trace1 = self.transport_sys[oSys].decode_connection(origin_zone, inter_jump1)
@@ -190,4 +189,3 @@ class met_area(object):
                 return info1 + infoM + info2
             else:
                 return "NOT POSIBLE"
-            

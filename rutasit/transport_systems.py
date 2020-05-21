@@ -115,7 +115,7 @@ class public_route(object):
             geod = pyproj.Geod(ellps='WGS84')
             est_orig = random.choice(self.zone_stations[orig_zone])
             dest_orig = random.choice(self.zone_stations[dest_zone])
-            linestring = self.trace_coordinates[min([est_orig, dest_orig]):max([est_orig, dest_orig])+1] # this could be used for the plotting routes feature
+            linestring = self.trace_coordinates[min([est_orig, dest_orig]):max([est_orig, dest_orig])+1]
             distance = geod.line_length(linestring[:,0], linestring[:,1])
             duration = 3.6 * distance / self.avg_speed
             return distance, duration, linestring
@@ -128,7 +128,7 @@ class public_route(object):
         else:
             for code_orig in range(N):
                 for code_dest in range(code_orig, N):
-                        if code_orig in self.zone_stations and code_dest in self.zone_stations: # check this for NOT reversible systems
+                        if code_orig in self.zone_stations and code_dest in self.zone_stations: # check this for NON reversible systems
                             index_orig = self.parent_group.parent_met.forward_mapping[code_orig]
                             index_dest = self.parent_group.parent_met.forward_mapping[code_dest]
                             group_connection_matrix[index_orig, index_dest] |=  2 ** self.coder
